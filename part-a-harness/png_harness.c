@@ -12,7 +12,10 @@
    */
 
 int main(int argc, char **argv) {
-  (void)argc;
-  (void)argv;
+  if (argc != 2) return 0;
+
+  const char *filepath = argv[1];
+  (void)filepath;
+
   return 0;
 }
