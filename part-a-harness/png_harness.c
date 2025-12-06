@@ -50,9 +50,25 @@ int main(int argc, char **argv) {
     fclose(fp);
     return 0;
   }
-  
+
   png_init_io(png, fp);
   png_set_sig_bytes(png, 8);
+
+  png_read_info(png, info);
+
+  png_uint_32 width, height;
+  int bit_depth, color_type, interlace_method, compression_method, filter_method;
+  png_get_IHDR(png, info, &width, &height, &bit_depth, &color_type,
+               &interlace_method, &compression_method, &filter_method);
+
+  png_read_update_info(png, info);
+
+  png_size_t rowbytes = png_get_rowbytes(png, info);
+  if (rowbytes == 0 || height == 0) {
+    png_destroy_read_struct(&png, &info, NULL);
+    fclose(fp);
+    return 0;
+  }
 
   png_destroy_read_struct(&png, &info, NULL);
   fclose(fp);
