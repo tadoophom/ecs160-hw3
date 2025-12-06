@@ -1,4 +1,5 @@
 #include <png.h>
+#include <setjmp.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -18,6 +19,26 @@ int main(int argc, char **argv) {
   FILE *fp = fopen(filepath, "rb");
   if (fp == NULL) return 0;
 
+  png_structp png = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+  if (png == NULL) {
+    fclose(fp);
+    return 0;
+  }
+
+  png_infop info = png_create_info_struct(png);
+  if (info == NULL) {
+    png_destroy_read_struct(&png, NULL, NULL);
+    fclose(fp);
+    return 0;
+  }
+
+  if (setjmp(png_jmpbuf(png))) {
+    png_destroy_read_struct(&png, &info, NULL);
+    fclose(fp);
+    return 0;
+  }
+
+  png_destroy_read_struct(&png, &info, NULL);
   fclose(fp);
 
   return 0;
