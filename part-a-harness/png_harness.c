@@ -38,6 +38,22 @@ int main(int argc, char **argv) {
     return 0;
   }
 
+  unsigned char header[8];
+  if (fread(header, 1, 8, fp) != 8) {
+    png_destroy_read_struct(&png, &info, NULL);
+    fclose(fp);
+    return 0;
+  }
+
+  if (png_sig_cmp(header, 0, 8)) {
+    png_destroy_read_struct(&png, &info, NULL);
+    fclose(fp);
+    return 0;
+  }
+
+  png_set_sig_bytes(png, 8);
+  png_init_io(png, fp);
+
   png_destroy_read_struct(&png, &info, NULL);
   fclose(fp);
 
