@@ -58,8 +58,12 @@ int main(int argc, char **argv) {
 
   png_uint_32 width, height;
   int bit_depth, color_type, interlace_method, compression_method, filter_method;
-  png_get_IHDR(png, info, &width, &height, &bit_depth, &color_type,
-               &interlace_method, &compression_method, &filter_method);
+  if (!png_get_IHDR(png, info, &width, &height, &bit_depth, &color_type,
+                    &interlace_method, &compression_method, &filter_method)) {
+    png_destroy_read_struct(&png, &info, NULL);
+    fclose(fp);
+    return 0;
+  }
 
   png_read_update_info(png, info);
 
@@ -70,6 +74,18 @@ int main(int argc, char **argv) {
     return 0;
   }
 
+  png_bytep row = (png_bytep)malloc(rowbytes);
+  if (row == NULL) {
+    png_destroy_read_struct(&png, &info, NULL);
+    fclose(fp);
+    return 0;
+  }
+
+  for (png_uint_32 y = 0; y < height; ++y) {
+    png_read_row(png, row, NULL);
+  }
+
+  free(row);
   png_destroy_read_struct(&png, &info, NULL);
   fclose(fp);
 
