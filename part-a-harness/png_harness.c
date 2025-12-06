@@ -50,9 +50,9 @@ int main(int argc, char **argv) {
     fclose(fp);
     return 0;
   }
-
-  png_set_sig_bytes(png, 8);
+  
   png_init_io(png, fp);
+  png_set_sig_bytes(png, 8);
 
   png_destroy_read_struct(&png, &info, NULL);
   fclose(fp);
