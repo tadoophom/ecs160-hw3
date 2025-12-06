@@ -15,7 +15,10 @@ int main(int argc, char **argv) {
   if (argc != 2) return 0;
 
   const char *filepath = argv[1];
-  (void)filepath;
+  FILE *fp = fopen(filepath, "rb");
+  if (fp == NULL) return 0;
+
+  fclose(fp);
 
   return 0;
 }
