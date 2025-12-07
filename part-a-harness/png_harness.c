@@ -73,6 +73,28 @@ int main(int argc, char **argv) {
         return 1;
     }
 
+    png_bytep *rows = (png_bytep *)malloc(sizeof(png_bytep) * height);
+    if (rows == NULL) {
+        png_destroy_read_struct(&png, &info, NULL);
+        fclose(fp);
+        return 1;
+    }
+
+    for (png_uint_32 y = 0; y < height; ++y) {
+        rows[y] = (png_bytep)malloc(rowbytes);
+        if (rows[y] == NULL) {
+            for (png_uint_32 i = 0; i < y; ++i) free(rows[i]);
+            free(rows);
+            png_destroy_read_struct(&png, &info, NULL);
+            fclose(fp);
+            return 1;
+        }
+    }
+
+    png_read_image(png, rows);
+    png_read_end(png, info);
+    fclose(fp);
+
     /// Insert APIs to test
     /// Some interesting APIs to test that modify the PNG attributes:
     /// png_set_expand, png_set_gray_to_rgb, png_set_palette_to_rgb, png_set_filler, png_set_scale_16, png_set_packing
