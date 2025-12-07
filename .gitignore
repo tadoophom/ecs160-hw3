@@ -1,0 +1,9 @@
+png_harness
+libpng
+part-b-afl/libpng
+part-b-afl/libpng-afl
+part-b-afl/in_*
+part-b-afl/out_*
+afl-build
+part-b-afl/libpng-*.tar.gz
+png_harness.dSYM/
