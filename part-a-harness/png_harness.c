@@ -95,24 +95,32 @@ int main(int argc, char **argv) {
     png_read_end(png, info);
     fclose(fp);
 
-    /// Insert APIs to test
-    /// Some interesting APIs to test that modify the PNG attributes:
-    /// png_set_expand, png_set_gray_to_rgb, png_set_palette_to_rgb, png_set_filler, png_set_scale_16, png_set_packing
-    /// Some interesting APIs to test that fetch the PNG attributes:
-    /// png_get_channels, png_get_color_type, png_get_rowbytes, png_get_image_width, png_get_image_height, 
-
     /// Optional write API
-            FILE *out = fopen(outfile, "wb");
-    if (!out) { perror("open output"); return 1; }
+    FILE *out = fopen(outpath, "wb");
+    if (!out) {
+        for (png_uint_32 y = 0; y < height; ++y) free(rows[y]);
+        free(rows);
+        png_destroy_read_struct(&png, &info, NULL);
+        return 2;
+    }
 
     png_structp wpng = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
     png_infop   winfo = png_create_info_struct(wpng);
-    if (!wpng || !winfo) return 1;
+    if (!wpng || !winfo) {
+        fclose(out);
+        for (png_uint_32 y = 0; y < height; ++y) free(rows[y]);
+        free(rows);
+        png_destroy_read_struct(&png, &info, NULL);
+        return 2;
+    }
 
     if (setjmp(png_jmpbuf(wpng))) {
         fclose(out);
         png_destroy_write_struct(&wpng, &winfo);
-        return 1;
+        for (png_uint_32 y = 0; y < height; ++y) free(rows[y]);
+        free(rows);
+        png_destroy_read_struct(&png, &info, NULL);
+        return 2;
     }
 
     png_init_io(wpng, out);
@@ -127,5 +135,13 @@ int main(int argc, char **argv) {
     png_write_info(wpng, winfo);
     png_write_image(wpng, rows);
     png_write_end(wpng, winfo);
+
+    png_destroy_write_struct(&wpng, &winfo);
+    fclose(out);
+
+    for (png_uint_32 y = 0; y < height; ++y) free(rows[y]);
+    free(rows);
+    png_destroy_read_struct(&png, &info, NULL);
+
     return 0;
 }
