@@ -108,6 +108,7 @@ int main(int argc, char **argv) {
     png_infop   winfo = png_create_info_struct(wpng);
     if (!wpng || !winfo) {
         fclose(out);
+        if (wpng != NULL) png_destroy_write_struct(&wpng, NULL);
         for (png_uint_32 y = 0; y < height; ++y) free(rows[y]);
         free(rows);
         png_destroy_read_struct(&png, &info, NULL);
