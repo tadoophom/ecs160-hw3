@@ -48,6 +48,31 @@ int main(int argc, char **argv) {
 
     png_read_info(png, info);
 
+    png_set_expand(png);
+    png_set_gray_to_rgb(png);
+    png_set_palette_to_rgb(png);
+    png_set_filler(png, 0xFF, PNG_FILLER_AFTER);
+    png_set_scale_16(png);
+    png_set_packing(png);
+
+    png_uint_32 width, height;
+    int bit_depth, color_type, interlace_method, compression_method, filter_method;
+    if (!png_get_IHDR(png, info, &width, &height, &bit_depth, &color_type,
+                      &interlace_method, &compression_method, &filter_method)) {
+        png_destroy_read_struct(&png, &info, NULL);
+        fclose(fp);
+        return 1;
+    }
+
+    png_read_update_info(png, info);
+
+    png_size_t rowbytes = png_get_rowbytes(png, info);
+    if (rowbytes == 0 || height == 0) {
+        png_destroy_read_struct(&png, &info, NULL);
+        fclose(fp);
+        return 1;
+    }
+
     /// Insert APIs to test
     /// Some interesting APIs to test that modify the PNG attributes:
     /// png_set_expand, png_set_gray_to_rgb, png_set_palette_to_rgb, png_set_filler, png_set_scale_16, png_set_packing
