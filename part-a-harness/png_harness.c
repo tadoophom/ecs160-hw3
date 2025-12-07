@@ -1,31 +1,52 @@
 #include <png.h>
+#include <setjmp.h>
 #include <stdio.h>
 #include <stdlib.h>
 
 int main(int argc, char **argv) {
-    if (argc < 3) return 0;
-    FILE *fp = fopen(argv[1], "rb");
-    char* outfile = argv[2];
-    if (!fp) return 0;
+    if (argc < 3) return 1;
+
+    const char *inpath = argv[1];
+    const char *outpath = argv[2];
+
+    FILE *fp = fopen(inpath, "rb");
+    if (fp == NULL) return 1;
 
     png_structp png = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
-    if (!png) return 0;
-
-    /* Provide I/O */
-    FILE *fp = fopen(filename, "rb");
-    png_init_io(png, fp);
+    if (png == NULL) {
+        fclose(fp);
+        return 1;
+    }
 
     png_infop info = png_create_info_struct(png);
-    if (!info) {
+    if (info == NULL) {
         png_destroy_read_struct(&png, NULL, NULL);
-        return 0;
+        fclose(fp);
+        return 1;
     }
 
     if (setjmp(png_jmpbuf(png))) {
-        /* Swallow all libpng longjmp errors. */
         png_destroy_read_struct(&png, &info, NULL);
-        return 0;
+        fclose(fp);
+        return 1;
     }
+
+    unsigned char sig[8];
+    if (fread(sig, 1, 8, fp) != 8) {
+        png_destroy_read_struct(&png, &info, NULL);
+        fclose(fp);
+        return 1;
+    }
+    if (png_sig_cmp(sig, 0, 8)) {
+        png_destroy_read_struct(&png, &info, NULL);
+        fclose(fp);
+        return 1;
+    }
+
+    png_init_io(png, fp);
+    png_set_sig_bytes(png, 8);
+
+    png_read_info(png, info);
 
     /// Insert APIs to test
     /// Some interesting APIs to test that modify the PNG attributes:
