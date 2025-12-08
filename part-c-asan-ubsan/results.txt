@@ -1,0 +1,24 @@
+        american fuzzy lop ++4.35a {default} (./png_harness) [explore]        
+┌─ process timing ────────────────────────────────────┬─ overall results ────┐
+│        run time : 0 days, 0 hrs, 59 min, 54 sec     │  cycles done : 0     │
+│   last new find : 0 days, 0 hrs, 15 min, 24 sec     │ corpus count : 342   │
+│last saved crash : 0 days, 0 hrs, 8 min, 2 sec       │saved crashes : 27    │
+│ last saved hang : none seen yet                     │  saved hangs : 0     │
+├─ cycle progress ─────────────────────┬─ map coverage┴──────────────────────┤
+│  now processing : 139*1 (40.6%)      │    map density : 6.54% / 11.80%     │
+│  runs timed out : 1 (0.29%)          │ count coverage : 3.74 bits/tuple    │
+├─ stage progress ─────────────────────┼─ findings in depth ─────────────────┤
+│  now trying : trim 16/16             │ favored items : 18 (5.26%)          │
+│ stage execs : 199/248 (80.24%)       │  new edges on : 30 (8.77%)          │
+│ total execs : 115k                   │ total crashes : 1256 (27 saved)     │
+│  exec speed : 24.36/sec (slow!)      │  total tmouts : 0 (0 saved)         │
+├─ fuzzing strategy yields ────────────┴─────────────┬─ item geometry ───────┤
+│   bit flips : 5/1.03M, 10/1.03M, 3/1.03M           │    levels : 3         │
+│  byte flips : 0/129k, 0/129k, 1/129k               │   pending : 304       │
+│ arithmetics : 6/9.03M, 2/18.0M, 0/18.0M            │  pend fav : 0         │
+│  known ints : 0/1.16M, 1/4.90M, 2/7.22M            │ own finds : 331       │
+│  dictionary : 0/0, 0/0, 0/120k, 0/120k             │  imported : 0         │
+│havoc/splice : 22/2276, 0/0                         │ stability : 100.00%   │
+│py/custom/rq : unused, unused, unused, unused       ├───────────────────────┘
+│    trim/eff : 43.17%/49.6k, 99.90%                 │             [cpu: 30%]
+└─ strategy: explore ────────── state: in progress ──┘
