@@ -1,0 +1,23 @@
+┌─ process timing ────────────────────────────────────┬─ overall results ────┐
+│        run time : 0 days, 0 hrs, 59 min, 56 sec     │  cycles done : 66    │
+│   last new find : 0 days, 0 hrs, 2 min, 19 sec      │ corpus count : 393   │
+│last saved crash : 0 days, 0 hrs, 37 min, 17 sec     │saved crashes : 39    │
+│ last saved hang : none seen yet                     │  saved hangs : 0     │
+├─ cycle progress ─────────────────────┬─ map coverage┴──────────────────────┤
+│  now processing : 387.29 (98.5%)     │    map density : 4.21% / 11.79%     │
+│  runs timed out : 0 (0.00%)          │ count coverage : 3.81 bits/tuple    │
+├─ stage progress ─────────────────────┼─ findings in depth ─────────────────┤
+│  now trying : havoc                  │ favored items : 26 (6.62%)          │
+│ stage execs : 300/320 (93.75%)       │  new edges on : 34 (8.65%)          │
+│ total execs : 1.75M                  │ total crashes : 252k (39 saved)     │
+│  exec speed : 257.7/sec              │  total tmouts : 0 (0 saved)         │
+├─ fuzzing strategy yields ────────────┴─────────────┬─ item geometry ───────┤
+│   bit flips : 12/1.03M, 7/1.03M, 5/1.03M           │    levels : 7         │
+│  byte flips : 1/129k, 0/129k, 0/129k               │   pending : 0         │
+│ arithmetics : 19/9.03M, 1/18.0M, 0/18.0M           │  pend fav : 0         │
+│  known ints : 0/1.16M, 4/4.90M, 4/7.22M            │ own finds : 382       │
+│  dictionary : 0/0, 0/0, 0/507k, 0/507k             │  imported : 0         │
+│havoc/splice : 62/1.08M, 0/0                        │ stability : 100.00%   │
+│py/custom/rq : unused, unused, unused, unused       ├───────────────────────┘
+│    trim/eff : 54.52%/549k, 99.89%                  │             [cpu: 35%]
+└─ strategy: explore ────────── state: in progress ──┘
