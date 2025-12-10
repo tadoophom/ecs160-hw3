@@ -11,7 +11,7 @@ AFL ++4.34c {default} (.../ecs160-hw3/part-d-mutator/harness_asan) [explore]
 │  now trying : havoc                  │ favored items : 2 (14.29%)          │
 │ stage execs : 12/50 (24.00%)         │  new edges on : 2 (14.29%)          │
 │ total execs : 65.6k                  │ total crashes : 44.9k (1 saved)     │
-│  exec speed : 0.00/sec (zzzz...)     │  total tmouts : 4856 (0 saved)      │
+│  exec speed : 20.63/sec (slow!)     │  total tmouts : 4856 (0 saved)      │
 ├─ fuzzing strategy yields ────────────┴─────────────┬─ item geometry ───────┤
 │   bit flips : 0/1008, 0/1007, 0/1005               │    levels : 2         │
 │  byte flips : 0/126, 0/125, 0/123                  │   pending : 0         │
@@ -22,3 +22,4 @@ AFL ++4.34c {default} (.../ecs160-hw3/part-d-mutator/harness_asan) [explore]
 │py/custom/rq : unused, 3/30.5k, unused, unused      ├───────────────────────┘
 │    trim/eff : 46.20%/3936, 99.21%                  │             [cpu:131%]
 └─ strategy: exploit ────────── state: finished... ──┘
+

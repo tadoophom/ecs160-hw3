@@ -1,5 +1,3 @@
-//Compile: gcc -shared -Wall -O3 -fPIC custom_mutator.c -o custom_mutator.so -lz
-
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>

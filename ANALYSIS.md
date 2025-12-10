@@ -59,7 +59,8 @@ MacOS 26.1 Tahoe
 └─ strategy: explore ────────── state: in progress ──┘
 
 When running the application without seeds, the execution speed is very high (945.4/sec). This is because the fuzzer generates short and simple inputs. However, the total map coverage is quite low at 6.21%. 
-The opposite happens when we run the application with seeds, the execution speed is much lower (257.7/sec) but the coverage is much higher at 11.79%. The execution speed decreased a lot because the fuzzer has to generate more complex inputs to achieve more coverage. 
+The opposite happens when we run the application with seeds, the execution speed is much lower (257.7/sec) but the map coverage is much higher at 11.79%. The execution speed decreased a lot because the fuzzer has to generate more complex inputs to achieve more coverage.
+As for the new edges found, the seedless run had 47.37% while the seeded run had 8.65%. This contradicts the expected code coverage difference between the two runs.
 The seedless run found 24 crashes while the seeded run found 39 crashe which was also expected because the better inputs allow the fuzzer to find more bugs that a seedless run cannot find.
  
  ## Part C results
@@ -89,7 +90,8 @@ The seedless run found 24 crashes while the seeded run found 39 crashe which was
 └─ strategy: explore ────────── state: in progress ──┘
 
 
-When using the ASAN and UBSAN sanitizers, the execution speed is much lower (24.36/sec) but the coverage reached 11.80%. The execution speed is very low because the sanitizers have to check shadow memory, redzones, and undefined behavior at runtime. 
+When using the ASAN and UBSAN sanitizers, the execution speed is much lower (24.36/sec) but the map coverage reached 11.80%. The execution speed is very low because the sanitizers have to check shadow memory, redzones, and undefined behavior at runtime. 
+As for the new edges found, the run had 8.77% which is about the same as the seeded run in part B.
 This run has 27 saved crashes which is less than the seeded run in part B but these crashes might be caused by bugs that would not be detected in runs without the sanitizers.
 
 ## Part D results
@@ -101,7 +103,7 @@ MacOS Sequoia 15.5
 
 ### Mutator logic
 
-The custom mutator parses the PNG file into chunks, modifies them then puts them back in the PNG file. It targets the IHDR chunk to try to get a buffer overflow and it randomly removes chunks to find crashes caused by missing data. The mutator also recalculates the CRC of every modified chunk to try finding more vulnerabilities. 
+The custom mutator parses the PNG file into chunks, modifies them then puts them back in the PNG file. It targets the IHDR chunk to try to get a buffer overflow and it randomly removes chunks to find crashes caused by missing data. The mutator also randomly corrupts the CRC of every modified chunk to try finding more vulnerabilities. 
 
 ┌─ process timing ────────────────────────────────────┬─ overall results ────┐
 │        run time : 0 days, 1 hrs, 1 min, 15 sec      │  cycles done : 38    │
@@ -115,7 +117,7 @@ The custom mutator parses the PNG file into chunks, modifies them then puts them
 │  now trying : havoc                  │ favored items : 2 (14.29%)          │
 │ stage execs : 12/50 (24.00%)         │  new edges on : 2 (14.29%)          │
 │ total execs : 65.6k                  │ total crashes : 44.9k (1 saved)     │
-│  exec speed : 0.00/sec (zzzz...)     │  total tmouts : 4856 (0 saved)      │
+│  exec speed : 20.63/sec (slow!)     │  total tmouts : 4856 (0 saved)      │
 ├─ fuzzing strategy yields ────────────┴─────────────┬─ item geometry ───────┤
 │   bit flips : 0/1008, 0/1007, 0/1005               │    levels : 2         │
 │  byte flips : 0/126, 0/125, 0/123                  │   pending : 0         │
@@ -126,3 +128,5 @@ The custom mutator parses the PNG file into chunks, modifies them then puts them
 │py/custom/rq : unused, 3/30.5k, unused, unused      ├───────────────────────┘
 │    trim/eff : 46.20%/3936, 99.21%                  │             [cpu:131%]
 └─ strategy: exploit ────────── state: finished... ──┘
+
+When using our custom mutator, the execution speed is much lower at 20.63/sec but the map coverage reached 22.22%. The execution speed is very low because it use the sanitizers and because of the parsing and rebuilding PNG files logic. It found 14.29% new edges and 1 saved crash. This is not really a good mutator because the fuzzer only recorded one unique crash which doesn't tell us much about the vulnerabilities of the PNG library but on the other hand it found a decent amount of new edges. 
