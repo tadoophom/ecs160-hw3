@@ -1,0 +1,24 @@
+AFL ++4.34c {default} (.../ecs160-hw3/part-d-mutator/harness_asan) [explore] 
+┌─ process timing ────────────────────────────────────┬─ overall results ────┐
+│        run time : 0 days, 1 hrs, 1 min, 15 sec      │  cycles done : 38    │
+│   last new find : 0 days, 0 hrs, 56 min, 53 sec     │ corpus count : 14    │
+│last saved crash : 0 days, 1 hrs, 1 min, 13 sec      │saved crashes : 1     │
+│ last saved hang : 0 days, 0 hrs, 13 min, 43 sec     │  saved hangs : 1     │
+├─ cycle progress ─────────────────────┬─ map coverage┴──────────────────────┤
+│  now processing : 10.258 (71.4%)     │    map density : 16.67% / 22.22%    │
+│  runs timed out : 0 (0.00%)          │ count coverage : 16.00 bits/tuple   │
+├─ stage progress ─────────────────────┼─ findings in depth ─────────────────┤
+│  now trying : havoc                  │ favored items : 2 (14.29%)          │
+│ stage execs : 12/50 (24.00%)         │  new edges on : 2 (14.29%)          │
+│ total execs : 65.6k                  │ total crashes : 44.9k (1 saved)     │
+│  exec speed : 0.00/sec (zzzz...)     │  total tmouts : 4856 (0 saved)      │
+├─ fuzzing strategy yields ────────────┴─────────────┬─ item geometry ───────┤
+│   bit flips : 0/1008, 0/1007, 0/1005               │    levels : 2         │
+│  byte flips : 0/126, 0/125, 0/123                  │   pending : 0         │
+│ arithmetics : 0/8806, 0/17.4k, 0/17.1k             │  pend fav : 0         │
+│  known ints : 0/1127, 0/4718, 0/6861               │ own finds : 4         │
+│  dictionary : 0/0, 0/0, 0/0, 0/0                   │  imported : 0         │
+│havoc/splice : 0/30.6k, 0/0                         │ stability : 100.00%   │
+│py/custom/rq : unused, 3/30.5k, unused, unused      ├───────────────────────┘
+│    trim/eff : 46.20%/3936, 99.21%                  │             [cpu:131%]
+└─ strategy: exploit ────────── state: finished... ──┘

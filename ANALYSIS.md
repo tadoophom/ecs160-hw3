@@ -91,3 +91,38 @@ The seedless run found 24 crashes while the seeded run found 39 crashe which was
 
 When using the ASAN and UBSAN sanitizers, the execution speed is much lower (24.36/sec) but the coverage reached 11.80%. The execution speed is very low because the sanitizers have to check shadow memory, redzones, and undefined behavior at runtime. 
 This run has 27 saved crashes which is less than the seeded run in part B but these crashes might be caused by bugs that would not be detected in runs without the sanitizers.
+
+## Part D results
+### Machine specs
+
+Apple M4 
+16 GB RAM
+MacOS Sequoia 15.5
+
+### Mutator logic
+
+The custom mutator parses the PNG file into chunks, modifies them then puts them back in the PNG file. It targets the IHDR chunk to try to get a buffer overflow and it randomly removes chunks to find crashes caused by missing data. The mutator also recalculates the CRC of every modified chunk to try finding more vulnerabilities. 
+
+┌─ process timing ────────────────────────────────────┬─ overall results ────┐
+│        run time : 0 days, 1 hrs, 1 min, 15 sec      │  cycles done : 38    │
+│   last new find : 0 days, 0 hrs, 56 min, 53 sec     │ corpus count : 14    │
+│last saved crash : 0 days, 1 hrs, 1 min, 13 sec      │saved crashes : 1     │
+│ last saved hang : 0 days, 0 hrs, 13 min, 43 sec     │  saved hangs : 1     │
+├─ cycle progress ─────────────────────┬─ map coverage┴──────────────────────┤
+│  now processing : 10.258 (71.4%)     │    map density : 16.67% / 22.22%    │
+│  runs timed out : 0 (0.00%)          │ count coverage : 16.00 bits/tuple   │
+├─ stage progress ─────────────────────┼─ findings in depth ─────────────────┤
+│  now trying : havoc                  │ favored items : 2 (14.29%)          │
+│ stage execs : 12/50 (24.00%)         │  new edges on : 2 (14.29%)          │
+│ total execs : 65.6k                  │ total crashes : 44.9k (1 saved)     │
+│  exec speed : 0.00/sec (zzzz...)     │  total tmouts : 4856 (0 saved)      │
+├─ fuzzing strategy yields ────────────┴─────────────┬─ item geometry ───────┤
+│   bit flips : 0/1008, 0/1007, 0/1005               │    levels : 2         │
+│  byte flips : 0/126, 0/125, 0/123                  │   pending : 0         │
+│ arithmetics : 0/8806, 0/17.4k, 0/17.1k             │  pend fav : 0         │
+│  known ints : 0/1127, 0/4718, 0/6861               │ own finds : 4         │
+│  dictionary : 0/0, 0/0, 0/0, 0/0                   │  imported : 0         │
+│havoc/splice : 0/30.6k, 0/0                         │ stability : 100.00%   │
+│py/custom/rq : unused, 3/30.5k, unused, unused      ├───────────────────────┘
+│    trim/eff : 46.20%/3936, 99.21%                  │             [cpu:131%]
+└─ strategy: exploit ────────── state: finished... ──┘
