@@ -9,3 +9,4 @@ part-b-afl/out_*
 afl-build
 part-b-afl/libpng-*.tar.gz
 png_harness.dSYM/
+fuzz_build/
