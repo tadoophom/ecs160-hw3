@@ -1,5 +1,0 @@
----
-triple:          'arm64-apple-darwin'
-binary-path:     'part-b-afl/harness_b'
-relocations:     []
-...
