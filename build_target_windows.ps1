@@ -36,14 +36,14 @@ if [ ! -d "$WORK/libpng" ]; then
 fi
 cd "$WORK/libpng"
 
-echo "[*] Building Part B..."
+echo "Building Part B..."
 git clean -fdx
 autoreconf -fi
 CFLAGS="-O2" CC="$AFL_CC" ./configure --disable-shared --prefix="$WORK/install_b"
 make -j"$(nproc)" install
 "$AFL_CC" /repo/part-a-harness/png_harness.c -I"$WORK/install_b/include" "$WORK/install_b/lib/libpng.a" -lz -lm -o "$WORK/harness_part_b"
 
-echo "[*] Building Part C..."
+echo "Building Part C..."
 git clean -fdx
 autoreconf -fi
 export AFL_USE_ASAN=1 AFL_USE_UBSAN=1
@@ -52,10 +52,10 @@ make -j"$(nproc)" install
 "$AFL_CC" /repo/part-a-harness/png_harness.c -I"$WORK/install_c/include" "$WORK/install_c/lib/libpng.a" -lz -lm -o "$WORK/harness_part_c"
 unset AFL_USE_ASAN AFL_USE_UBSAN
 
-echo "[*] Building Part D..."
+echo "Building Part D..."
 gcc -shared -Wall -O3 -fPIC /repo/part-d-mutator/custom_mutator.c -o "$WORK/custom_mutator.so" -lz
 
-echo "[+] Done! Targets are in /repo/fuzz_build"
+echo "Done! Targets are in /repo/fuzz_build"
 '@
 
 docker run --rm -t `
