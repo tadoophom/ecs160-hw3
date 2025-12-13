@@ -1,3 +1,4 @@
+.DS_Store
 png_harness
 libpng
 part-b-afl/libpng

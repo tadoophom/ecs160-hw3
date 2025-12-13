@@ -9,7 +9,6 @@ static const uint8_t PNG_SIG[8] = { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x
 typedef struct {
     uint8_t *mutated_buf;
     size_t   buf_capacity;
-    unsigned int seed;
 } mutator_state_t;
 
 typedef struct {
@@ -171,7 +170,6 @@ void *afl_custom_init(void *afl, unsigned int seed) {
     mutator_state_t *state = malloc(sizeof(mutator_state_t));
     state->mutated_buf = NULL;
     state->buf_capacity = 0;
-    state->seed = seed;
     return state;
 }
 
