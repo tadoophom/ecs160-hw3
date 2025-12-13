@@ -25,5 +25,5 @@ afl-fuzz -i part-b-afl/in_seeds -o part-c-asan-ubsan/out_c_asan_ubsan -m none --
 
 ```powershell
 # From repo root (requires Docker Desktop; Docker must be running)
-pwsh -File .\build_target_windows.ps1
+pwsh -File ./build_target_windows.ps1
 ```
